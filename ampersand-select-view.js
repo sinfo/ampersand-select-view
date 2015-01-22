@@ -62,6 +62,7 @@ function SelectView (opts) {
     this.validClass = opts.validClass || 'input-valid';
     this.invalidClass = opts.invalidClass || 'input-invalid';
     this.requiredMessage = opts.requiredMessage || 'Selection required';
+    this.invalidMessage = opts.invalidMessage || 'Selection is invalid';
 
     this.onChange = this.onChange.bind(this);
 
@@ -222,8 +223,14 @@ SelectView.prototype.validate = function () {
         return element === this.value;
     }.bind(this));
 
+    if(!this.required && (this.value == null || this.value == '')) {
+        this.valid = true;
+    }
+
     if (!this.valid && this.required) {
         this.setMessage(this.requiredMessage);
+    } else if(!this.valid) {
+        this.setMessage(this.invalidMessage);
     } else {
         this.setMessage();
     }
